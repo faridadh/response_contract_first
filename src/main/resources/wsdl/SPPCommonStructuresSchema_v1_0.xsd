@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        targetNamespace="http://api.spp.org/schema/market/Common/v1" 
+        xmlns:cmn="http://api.spp.org/schema/market/Common/v1" 
+        elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>
+        This XSD defines structures that are shared among several Web Service
+        interfaces within the SPP Integrated Marketplace. Only structures that
+        are used in more than one interface should be placed here.
+		
+		Any service that uses these structures should reference this file.
+		Data structures from this file should not be copy/pasted into other files.
+        </documentation>
+    </annotation>
+    
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--> 
+<!--  This section contains all the top level elements.                     -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    
+	<element name="MessageConfirmation">
+		<complexType>
+			<annotation>
+				<documentation>
+				Message confirming receipt of an incoming message. It can 
+				report either Success or Warning and has an optional description
+				element.
+				</documentation>
+			</annotation>
+			<sequence>
+				<element name="Status" type="cmn:MessageConfirmationEnum" minOccurs="1" maxOccurs="1" />
+				<element name="Description" type="string" minOccurs="0" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+    
+	<complexType name="GenericFaultType">
+		<annotation>
+		  <documentation>
+			When a web service call fails, this element should be thrown with a fault.  
+			Note that in the case of a submittal, throwing this fault means that NO data
+			has been saved.  The fault will contain a collection of errors.
+		  </documentation>
+		</annotation>
+		<sequence>
+		  <element name="Error" type="cmn:FaultDescription"
+				   minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<element name="GenericSoapFault">
+		<complexType>
+			<sequence>
+				<element name="GenericFault" type="cmn:GenericFaultType" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	
+  
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--> 
+<!--  This section contains complex types                                   -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <complexType name="FaultDescription">
+      <annotation>
+        <documentation>
+        Type to specify issues when a fault occurs.  
+        Could be an error or a warning, depending on the context.
+        </documentation>
+      </annotation>
+      <sequence>
+        <element name="Code" type="string" minOccurs="1" maxOccurs="1">
+         <annotation>
+          <documentation>
+            The error code will be a plain string element.
+          </documentation>
+         </annotation>
+        </element>
+        <element name="Reason" type="string" minOccurs="1" maxOccurs="1">
+         <annotation>
+          <documentation>
+            The actual text of the reason will be a plain string
+            element.
+          </documentation>
+         </annotation>
+        </element>
+      </sequence>
+    </complexType>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--> 
+<!--  This section contains simple types                                    -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--> 
+   
+   <simpleType name="MessageConfirmationEnum">
+      <annotation>
+        <documentation>
+          List the possible values for message confirmation status   
+        </documentation>
+      </annotation>
+      <restriction base="string">
+          <enumeration value="Success" />
+          <enumeration value="Warning" />
+      </restriction>
+   </simpleType>
+   
+
+</schema>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://api.spp.org/services/integration/etlProcessExecutionResultsConsumingService/v2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:cmn="http://api.spp.org/schema/market/Common/v1"
+	xmlns:etl="http://api.spp.org/schema/integration/etlProcessExecutionResults/v2"
+	targetNamespace="http://api.spp.org/services/integration/etlProcessExecutionResultsConsumingService/v2"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<xs:schema elementFormDefault="qualified"
+			targetNamespace="http://api.spp.org/services/integration/etlProcessExecutionResultsConsumingService/v2">
+			<xs:import namespace="http://api.spp.org/schema/market/Common/v1"
+				schemaLocation="SPPCommonStructuresSchema_v1_0.xsd" />
+			<xs:import
+				namespace="http://api.spp.org/schema/integration/etlProcessExecutionResults/v2"
+				schemaLocation="etlProcessExecutionResultsSchema_v2_0.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="PostExecutionResultsSoapIn">
+		<wsdl:part name="parameters" element="etl:PostExecutionResults" />
+	</wsdl:message>
+	<wsdl:message name="PostExecutionResultsSoapOut">
+		<wsdl:part name="parameters" element="etl:PostExecutionResultsResponse" />
+	</wsdl:message>
+	<wsdl:message name="GenericSoapFault">
+		<wsdl:part name="parameters" element="cmn:GenericSoapFault" />
+	</wsdl:message>
+
+	<wsdl:portType name="etlProcessExecutionResultsConsumingServicePort">
+		<wsdl:operation name="PostExecutionResults">
+			<wsdl:input message="tns:PostExecutionResultsSoapIn" />
+			<wsdl:output message="tns:PostExecutionResultsSoapOut" />
+			<wsdl:fault message="tns:GenericSoapFault" name="GenericSoapFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="etlProcessExecutionResultsConsumingServiceBinding"
+		type="tns:etlProcessExecutionResultsConsumingServicePort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="PostExecutionResults">
+			<soap:operation
+				soapAction="http://api.spp.org/services/integration/etlProcessExecutionResultsConsumingService/v1/PostExecutionResults"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="GenericSoapFault">
+				<soap:fault name="GenericSoapFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="EtlProcessExecutionResultsConsumingServicePortService">
+		<wsdl:port name="etlProcessExecutionResultsConsumingServicePort"
+			binding="tns:etlProcessExecutionResultsConsumingServiceBinding">
+			<soap:address
+				location="http://localhost:9000/order/" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://api.spp.org/schema/integration/etlProcessExecution/v2"
+	xmlns:tns="http://api.spp.org/schema/integration/etlProcessExecution/v2"
+	xmlns:cmn="http://api.spp.org/schema/market/Common/v1"
+	elementFormDefault="qualified">
+
+	<import namespace="http://api.spp.org/schema/market/Common/v1"
+		schemaLocation="SPPCommonStructuresSchema_v1_0.xsd" />
+
+	<simpleType name="executionStatusCodeType">
+		<restriction base="string">
+			<enumeration value="SUCCESS" />
+			<enumeration value="FAILURE" />
+		</restriction>
+	</simpleType>
+
+	<element name="ExecuteProcess">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="processID" type="string" />
+				<element minOccurs="0" maxOccurs="1" name="correlationID"
+					type="string" />
+				<element minOccurs="0" maxOccurs="1" name="executionResultsPostingUrl"
+					type="string" />
+				<element minOccurs="0" maxOccurs="1" name="parameters"
+					type="tns:parameterListType" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="parameterListType">
+		<sequence>
+			<element minOccurs="1" maxOccurs="unbounded" name="parameter"
+				nillable="true" type="tns:parameterType" />
+		</sequence>
+	</complexType>
+
+	<complexType name="parameterType">
+		<sequence>
+			<element minOccurs="1" maxOccurs="1" name="name" type="string" />
+			<element minOccurs="1" maxOccurs="1" name="value" type="string" />
+		</sequence>
+	</complexType>
+
+	<element name="ExecuteProcessResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="status"
+					type="tns:executionStatusCodeType" />
+				<choice>
+					<element minOccurs="1" maxOccurs="1" name="runID" type="string" />
+					<element minOccurs="1" maxOccurs="unbounded" name="errorMessage"
+						type="string" />
+				</choice>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

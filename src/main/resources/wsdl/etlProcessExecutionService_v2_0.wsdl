@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://api.spp.org/services/integration/etlProcessExecution/v2"
+	xmlns:etl="http://api.spp.org/schema/integration/etlProcessExecution/v2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:cmn="http://api.spp.org/schema/market/Common/v1"
+	targetNamespace="http://api.spp.org/services/integration/etlProcessExecution/v2"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<xs:schema
+			targetNamespace="http://api.spp.org/services/integration/etlProcessExecution/v2">
+			<xs:import
+				namespace="http://api.spp.org/schema/integration/etlProcessExecution/v2"
+				schemaLocation="etlProcessExecutionSchema_v2_0.xsd" />
+			<xs:import namespace="http://api.spp.org/schema/market/Common/v1"
+				schemaLocation="SPPCommonStructuresSchema_v1_0.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="ExecuteProcessSoapIn">
+		<wsdl:part name="parameters" element="etl:ExecuteProcess" />
+	</wsdl:message>
+	<wsdl:message name="ExecuteProcessSoapOut">
+		<wsdl:part name="parameters" element="etl:ExecuteProcessResponse" />
+	</wsdl:message>
+	<wsdl:message name="GenericSoapFault">
+		<wsdl:part name="parameters" element="cmn:GenericSoapFault" />
+	</wsdl:message>
+
+	<wsdl:portType name="etlProcessExecutionServiceSoap">
+		<wsdl:operation name="ExecuteProcess">
+			<wsdl:input message="tns:ExecuteProcessSoapIn" />
+			<wsdl:output message="tns:ExecuteProcessSoapOut" />
+			<wsdl:fault message="tns:GenericSoapFault" name="GenericSoapFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="etlProcessExecutionServiceSoap" type="tns:etlProcessExecutionServiceSoap">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="ExecuteProcess">
+			<soap:operation
+				soapAction="http://api.spp.org/services/integration/etlProcessExecution/v1/ExecuteProcess"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="GenericSoapFault">
+				<soap:fault name="GenericSoapFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="etlProcessExecutionService">
+		<wsdl:port name="etlProcessExecutionServiceSoap" binding="tns:etlProcessExecutionServiceSoap">
+			<soap:address
+				location="http://api.spp.org/services/integration/etlProcessExecution/v2" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://api.spp.org/schema/integration/etlProcessExecutionResults/v2"
+	xmlns:tns="http://api.spp.org/schema/integration/etlProcessExecutionResults/v2"
+	xmlns:cmn="http://api.spp.org/schema/market/Common/v1"
+	elementFormDefault="qualified">
+
+	<import namespace="http://api.spp.org/schema/market/Common/v1"
+		schemaLocation="SPPCommonStructuresSchema_v1_0.xsd" />
+
+	<element name="PostExecutionResults">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" name="processID" type="string" />
+				<element minOccurs="0" maxOccurs="1" name="correlationID"
+					type="string" />
+				<element minOccurs="1" maxOccurs="1" name="runID" type="string" />
+				<element minOccurs="1" maxOccurs="1" name="status"
+					type="tns:StatusCodeType" />
+				<element minOccurs="0" maxOccurs="1" name="errorList"
+					type="tns:ArrayOfString" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<simpleType name="StatusCodeType">
+		<restriction base="string">
+			<enumeration value="SUCCESS" />
+			<enumeration value="WARNING" />
+			<enumeration value="FAILURE" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="ArrayOfString">
+		<sequence>
+			<element minOccurs="1" maxOccurs="unbounded" name="string"
+				nillable="true" type="string" />
+		</sequence>
+	</complexType>
+
+	<element name="PostExecutionResultsResponse">
+		<complexType>
+			<sequence>
+				<element minOccurs="1" maxOccurs="1" ref="cmn:MessageConfirmation" />
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>
